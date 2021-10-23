@@ -2,12 +2,12 @@
 .PHONY: run clean
 
 # Os pacotes tem que ser compilados antes pro compilador não reclamar de coisas não declaradas
-CUSTOM_PACKAGES = ./unsigned_array.vhd ./signed_array.vhd ./opcodes.vhd
-CUSTOM_PACKAGES += $(wildcard ./*.vhd)
-CUSTOM_PACKAGES += $(wildcard ./Testbench/*.vhd)
+FILES = ./unsigned_array.vhd ./signed_array.vhd ./opcodes.vhd
+FILES += $(wildcard ./*.vhd)
+FILES += $(wildcard ./Testbench/*.vhd)
 
 make:
-	@cd ./Generated && $(foreach src, $(CUSTOM_PACKAGES), \
+	@cd ./Generated && $(foreach src, $(FILES), \
 		ghdl -a --std=08 "$(realpath $(src))"; \
 	)
 
