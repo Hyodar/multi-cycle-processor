@@ -1,20 +1,25 @@
 
 .PHONY: run clean
 
+SRC_FOLDER = ./project
+BUILD_FOLDER = ./project/Generated
+
 # Os pacotes tem que ser compilados antes pro compilador não reclamar de coisas não declaradas
-FILES = ./unsigned_array.vhd ./signed_array.vhd ./opcodes.vhd
-FILES += $(wildcard ./*.vhd)
-FILES += $(wildcard ./Testbench/*.vhd)
+CUSTOM_PACKAGES = $(SRC_FOLDER)/unsigned_array.vhd $(SRC_FOLDER)/signed_array.vhd $(SRC_FOLDER)/opcodes.vhd
+FILES += $(wildcard $(SRC_FOLDER)/*.vhd)
+FILES += $(wildcard $(SRC_FOLDER)/Testbench/*.vhd)
+FILES := $(CUSTOM_PACKAGES) $(filter-out $(CUSTOM_PACKAGES), $(FILES))
 
 make:
-	@cd ./Generated && $(foreach src, $(FILES), \
+	@cd $(BUILD_FOLDER) && $(foreach src, $(FILES), \
+		echo "$(src)"; \
 		ghdl -a --std=08 "$(realpath $(src))"; \
 	)
 
 clean:
-	@cd ./Generated && rm *;
+	@cd $(BUILD_FOLDER) && rm *;
 
 run:
-	@cd ./Generated && ghdl -e --std=08 $(testbench) && ghdl -r --std=08 $(testbench) --vcd=$(testbench).vcd --ieee-asserts=disable && gtkwave $(testbench).vcd
+	@cd $(BUILD_FOLDER) && ghdl -e --std=08 $(testbench) && ghdl -r --std=08 $(testbench) --vcd=$(testbench).vcd --ieee-asserts=disable && gtkwave $(testbench).vcd
 
 
