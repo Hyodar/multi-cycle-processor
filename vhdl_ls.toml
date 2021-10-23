@@ -1,0 +1,22 @@
+[Libraries]
+work.files = [
+	'control_unit.vhd',
+	'Testbench/processor_tb.vhd',
+	'Testbench/control_unit_tb.vhd',
+	'decoder.vhd',
+	'increment.vhd',
+	'opcodes.vhd',
+	'operator.vhd',
+	'processor.vhd',
+	'reg.vhd',
+	'regbank.vhd',
+	'rom.vhd',
+	'signed_array.vhd',
+	'signed_mux.vhd',
+	't_flipflop.vhd',
+	'Testbench/t_flipflop_tb.vhd',
+	'ula.vhd',
+	'Testbench/ula_tb.vhd',
+	'unsigned_array.vhd',
+	'unsigned_mux.vhd'
+]
