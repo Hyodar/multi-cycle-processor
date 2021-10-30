@@ -11,8 +11,6 @@ work.files = [
 	'reg.vhd',
 	'regbank.vhd',
 	'rom.vhd',
-	'signed_array.vhd',
-	'signed_mux.vhd',
 	't_flipflop.vhd',
 	'Testbench/t_flipflop_tb.vhd',
 	'ula.vhd',
