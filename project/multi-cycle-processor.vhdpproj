@@ -13,6 +13,9 @@
       <Header>processor_tb.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
+      <Header>state_machine_tb.vhd</Header>
+    </Items>
+    <Items xsi:type="ProjectFileVHDL">
       <Header>t_flipflop_tb.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
@@ -27,6 +30,9 @@
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>decoder.vhd</Header>
+  </Items>
+  <Items xsi:type="ProjectFileVHDL">
+    <Header>mux.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>opcodes.vhd</Header>
@@ -47,6 +53,9 @@
     <Header>rom.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
+    <Header>state_machine.vhd</Header>
+  </Items>
+  <Items xsi:type="ProjectFileVHDL">
     <Header>t_flipflop.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
@@ -54,9 +63,6 @@
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>unsigned_array.vhd</Header>
-  </Items>
-  <Items xsi:type="ProjectFileVHDL">
-    <Header>mux.vhd</Header>
   </Items>
   <CruviHSExtensions>
     <string xsi:nil="true" />
