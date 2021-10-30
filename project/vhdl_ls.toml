@@ -18,5 +18,5 @@ work.files = [
 	'ula.vhd',
 	'Testbench/ula_tb.vhd',
 	'unsigned_array.vhd',
-	'unsigned_mux.vhd'
+	'mux.vhd'
 ]

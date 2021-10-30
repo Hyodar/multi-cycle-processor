@@ -29,8 +29,8 @@ architecture a_control_unit of control_unit is
             clock: in std_logic;
             reset: in std_logic;
             write_enable: in std_logic;
-            input: in signed(size - 1 downto 0);
-            output: out signed(size - 1 downto 0)
+            input: in unsigned(size - 1 downto 0);
+            output: out unsigned(size - 1 downto 0)
         );
     end component;
     component rom is
@@ -54,8 +54,8 @@ architecture a_control_unit of control_unit is
         );
     end component;
     
-    signal pc0_output: signed(integer(ceil(log2(real(block_count)))) - 1 downto 0);
-    signal pc0_input: signed(integer(ceil(log2(real(block_count)))) - 1 downto 0);
+    signal pc0_output: unsigned(integer(ceil(log2(real(block_count)))) - 1 downto 0);
+    signal pc0_input: unsigned(integer(ceil(log2(real(block_count)))) - 1 downto 0);
     signal pc0_write_enable: std_logic;
     signal pc0_output_unsigned: unsigned(integer(ceil(log2(real(block_count)))) - 1 downto 0);
     
@@ -78,17 +78,17 @@ begin
     
     rom0: rom
     generic map(block_size => 12, block_count => 128, rom_content => (
-            0 => "000000000000", -- nop;
-            1 => "000000000000", -- nop;
-            2 => "010000000000", -- opcode desconhecido
-            3 => "000000000000", -- nop;
-            4 => "000000000000", -- nop;
-            5 => "111100000111", -- jump 7;
-            6 => "000000000000", -- nop;
-            7 => "000000000000", -- nop;
-            8 => "111100000000", -- jump 0;
-            9 => "000000000000", -- nop;
-            10 => "000000000000", -- nop;
+            0 => "000000000000", --     nop
+            1 => "000000000000", --     nop
+            2 => "010000000000", --     opcode desconhecido
+            3 => "000000000000", --     nop
+            4 => "000000000000", --     nop
+            5 => "111100000111", --     jump 7
+            6 => "000000000000", --     nop
+            7 => "000000000000", --     nop
+            8 => "111100000000", --     jump 0
+            9 => "000000000000", --     nop
+            10 => "000000000000", --    nop
             -- abaixo: casos omissos => (zero em todos os bits)
             others => (others => '0')
         ))
@@ -103,7 +103,7 @@ begin
     opcode_exception <= '0' when (jump_enable or nop_enable) else '1';
     
     jump_address <= instruction(integer(ceil(log2(real(block_count)))) - 1 downto 0);
-    pc0_input <= pc0_output + 1 when jump_enable = '0' else signed(jump_address);
+    pc0_input <= pc0_output + 1 when jump_enable = '0' else unsigned(jump_address);
     
     -- saída para debugging
     output <= instruction;

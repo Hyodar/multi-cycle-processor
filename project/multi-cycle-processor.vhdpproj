@@ -62,7 +62,7 @@
     <Header>unsigned_array.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
-    <Header>unsigned_mux.vhd</Header>
+    <Header>mux.vhd</Header>
   </Items>
   <CruviHSExtensions>
     <string xsi:nil="true" />

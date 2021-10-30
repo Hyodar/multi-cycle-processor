@@ -4,7 +4,6 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 use work.unsigned_array.all;
-use work.signed_array.all;
 
 entity processor is
     generic (
@@ -13,17 +12,17 @@ entity processor is
     );
     port (
         selector: in unsigned(1 downto 0);
-        immediate: in signed((reg_size - 1) downto 0); -- testpin
-        is_immediate: in unsigned(0 downto 0); -- mux0_selector
+        immediate: in unsigned((reg_size - 1) downto 0);
+        is_immediate: in unsigned(0 downto 0);
         reg0: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
         reg1: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
         reg2: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
         write_enable: in std_logic;
         clock: in std_logic;
         reset: in std_logic;
-        ula_out: out signed((reg_size - 1) downto 0);
-        read_data1: out signed((reg_size - 1) downto 0);
-        read_data2: out signed((reg_size - 1) downto 0)
+        ula_out: out unsigned((reg_size - 1) downto 0);
+        read_data1: out unsigned((reg_size - 1) downto 0);
+        read_data2: out unsigned((reg_size - 1) downto 0)
     );
 end entity processor;
 
@@ -33,20 +32,20 @@ architecture a_processor of processor is
             reg_size: positive
         );
         port(
-            x, y : in signed((reg_size - 1) downto 0);
+            x, y : in unsigned((reg_size - 1) downto 0);
             op_selection : in unsigned(1 downto 0);
-            output : out signed((reg_size - 1) downto 0)
+            output : out unsigned((reg_size - 1) downto 0)
         );
     end component;
-    component signed_mux is
+    component mux is
         generic (
             input_count: positive;
             bus_width: positive
         );
         port (
-            inputs: in signed_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
+            inputs: in unsigned_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
             selector: in unsigned((integer(ceil(log2(real(input_count)))) - 1) downto 0);
-            output: out signed((bus_width - 1) downto 0)
+            output: out unsigned((bus_width - 1) downto 0)
         );
     end component;
     component regbank is
@@ -58,22 +57,22 @@ architecture a_processor of processor is
             read_register1: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
             read_register2: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
             write_register: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-            write_data: in signed((reg_size - 1) downto 0);
+            write_data: in unsigned((reg_size - 1) downto 0);
             write_enable: in std_logic;
             clock: in std_logic;
             reset: in std_logic;
-            read_data1: out signed((reg_size - 1) downto 0);
-            read_data2: out signed((reg_size - 1) downto 0)
+            read_data1: out unsigned((reg_size - 1) downto 0);
+            read_data2: out unsigned((reg_size - 1) downto 0)
         );
     end component;
-    signal mux0_output: signed((reg_size - 1) downto 0);
-    signal ula0_output: signed((reg_size - 1) downto 0);
+    signal mux0_output: unsigned((reg_size - 1) downto 0);
+    signal ula0_output: unsigned((reg_size - 1) downto 0);
 begin
 
     ula0: ula
     generic map(reg_size => reg_size)
     port map(x => read_data1, y => mux0_output, op_selection => selector, output => ula0_output);
-    mux0: signed_mux
+    mux0: mux
     generic map(input_count => 2, bus_width => reg_size)
     port map(inputs => (0 => read_data2, 1 => immediate), selector => is_immediate, output => mux0_output);
     regbank0: regbank

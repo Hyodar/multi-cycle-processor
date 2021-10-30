@@ -3,7 +3,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
-use work.signed_array.all;
+use work.unsigned_array.all;
 
 entity regbank is
     generic (
@@ -14,25 +14,25 @@ entity regbank is
         read_register1: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
         read_register2: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
         write_register: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-        write_data: in signed(reg_size - 1 downto 0);
+        write_data: in unsigned(reg_size - 1 downto 0);
         write_enable: in std_logic;
         clock: in std_logic;
         reset: in std_logic;
-        read_data1: out signed(reg_size - 1 downto 0);
-        read_data2: out signed(reg_size - 1 downto 0)
+        read_data1: out unsigned(reg_size - 1 downto 0);
+        read_data2: out unsigned(reg_size - 1 downto 0)
     );
 end entity regbank;
 
 architecture a_regbank of regbank is
-    component signed_mux is
+    component mux is
         generic (
             input_count: positive;
             bus_width: positive
         );
         port (
-            inputs: in signed_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
+            inputs: in unsigned_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
             selector: in unsigned((integer(ceil(log2(real(input_count)))) - 1) downto 0);
-            output: out signed((bus_width - 1) downto 0)
+            output: out unsigned((bus_width - 1) downto 0)
         );
     end component;
     component reg is
@@ -43,8 +43,8 @@ architecture a_regbank of regbank is
             clock: in std_logic;
             reset: in std_logic;
             write_enable: in std_logic;
-            input: in signed(size - 1 downto 0);
-            output: out signed(size - 1 downto 0)
+            input: in unsigned(size - 1 downto 0);
+            output: out unsigned(size - 1 downto 0)
         );
     end component;
     component decoder is
@@ -57,14 +57,14 @@ architecture a_regbank of regbank is
             outputs: out std_logic_vector(0 to output_count - 1)
         );
     end component;
-    signal outputs: signed_array_t(0 to reg_count - 1)(reg_size - 1 downto 0);
+    signal outputs: unsigned_array_t(0 to reg_count - 1)(reg_size - 1 downto 0);
     signal write_enables: std_logic_vector(0 to reg_count - 1);
 begin
-    mux1: signed_mux
+    mux1: mux
     generic map(input_count => reg_count, bus_width => reg_size)
     port map(inputs => outputs, selector => read_register1, output => read_data1);
     
-    mux2: signed_mux
+    mux2: mux
     generic map(input_count => reg_count, bus_width => reg_size)
     port map(inputs => outputs, selector => read_register2, output => read_data2);
     

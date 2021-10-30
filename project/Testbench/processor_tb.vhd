@@ -15,7 +15,7 @@ architecture a_processor_tb of processor_tb is
         );
         port (
             selector: in unsigned(1 downto 0);
-            immediate: in signed((reg_size - 1) downto 0);
+            immediate: in unsigned((reg_size - 1) downto 0);
             is_immediate: in unsigned(0 downto 0);
             reg0: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
             reg1: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
@@ -23,9 +23,9 @@ architecture a_processor_tb of processor_tb is
             write_enable: in std_logic;
             clock: in std_logic;
             reset: in std_logic;
-            ula_out: out signed((reg_size - 1) downto 0);
-            read_data1: out signed((reg_size - 1) downto 0);
-            read_data2: out signed((reg_size - 1) downto 0)
+            ula_out: out unsigned((reg_size - 1) downto 0);
+            read_data1: out unsigned((reg_size - 1) downto 0);
+            read_data2: out unsigned((reg_size - 1) downto 0)
         );
     end component processor;
 
@@ -33,7 +33,7 @@ architecture a_processor_tb of processor_tb is
     signal finished: std_logic := '0';
     
     signal selector: unsigned(1 downto 0);
-    signal immediate: signed(15 downto 0);
+    signal immediate: unsigned(15 downto 0);
     signal is_immediate: unsigned(0 downto 0);
     signal reg0: unsigned(2 downto 0);
     signal reg1: unsigned(2 downto 0);
@@ -42,7 +42,7 @@ architecture a_processor_tb of processor_tb is
     
     signal clock: std_logic;
     signal reset: std_logic;
-    signal ula_out: signed(15 downto 0);
+    signal ula_out: unsigned(15 downto 0);
 
 begin
     uut: processor
@@ -88,7 +88,7 @@ begin
         -- addi $1,$2,10
         is_immediate <= "1";
         write_enable <= '1';
-        immediate <= to_signed(10, 16);
+        immediate <= to_unsigned(10, 16);
         selector <= "00";
         reg0 <= to_unsigned(1, 3);
         reg1 <= to_unsigned(2, 3);
@@ -98,7 +98,7 @@ begin
         -- addi $0,$1,10
         is_immediate <= "1";
         write_enable <= '1';
-        immediate <= to_signed(10, 16);
+        immediate <= to_unsigned(10, 16);
         selector <= "00";
         reg0 <= to_unsigned(0, 3);
         reg1 <= to_unsigned(1, 3);
@@ -108,7 +108,7 @@ begin
         -- add $2,$1,$1
         is_immediate <= "0";
         write_enable <= '1';
-        immediate <= to_signed(10, 16);
+        immediate <= to_unsigned(10, 16);
         selector <= "00";
         reg0 <= to_unsigned(2, 3);
         reg1 <= to_unsigned(1, 3);
@@ -118,7 +118,7 @@ begin
         -- add $2,$1,$0
         is_immediate <= "0";
         write_enable <= '1';
-        immediate <= to_signed(10, 16);
+        immediate <= to_unsigned(10, 16);
         selector <= "00";
         reg0 <= to_unsigned(2, 3);
         reg1 <= to_unsigned(1, 3);
@@ -128,7 +128,7 @@ begin
         -- add $3,$2,$1 (com write_enable falso, não deve escrever)
         is_immediate <= "0";
         write_enable <= '0';
-        immediate <= to_signed(10, 16);
+        immediate <= to_unsigned(10, 16);
         selector <= "00";
         reg0 <= to_unsigned(3, 3);
         reg1 <= to_unsigned(2, 3);

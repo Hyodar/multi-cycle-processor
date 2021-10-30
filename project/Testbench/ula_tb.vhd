@@ -13,13 +13,13 @@ architecture a_ula_tb of ula_tb is
             reg_size: positive
         );
         port(
-            x, y : in signed((reg_size - 1) downto 0);
+            x, y : in unsigned((reg_size - 1) downto 0);
             op_selection : in unsigned(1 downto 0);
-            output : out signed((reg_size - 1) downto 0)
+            output : out unsigned((reg_size - 1) downto 0)
         );
     end component;
 
-    signal x, y, output: signed(15 downto 0);
+    signal x, y, output: unsigned(15 downto 0);
     signal op_selection: unsigned(1 downto 0);
 
 begin
@@ -29,44 +29,44 @@ begin
     
     process
     begin
-        x <= to_signed(15, 16);
-        y <= to_signed(35, 16);
+        x <= unsigned(to_signed(15, 16));
+        y <= unsigned(to_signed(35, 16));
         op_selection <= "00";
         wait for 10 ns;
-        x <= to_signed(-15, 16);
-        y <= to_signed(35, 16);
+        x <= unsigned(to_signed(-15, 16));
+        y <= unsigned(to_signed(35, 16));
         op_selection <= "00";
         wait for 10 ns;
-        x <= to_signed(-15, 16);
-        y <= to_signed(-35, 16);
+        x <= unsigned(to_signed(-15, 16));
+        y <= unsigned(to_signed(-35, 16));
         op_selection <= "00";
         wait for 10 ns;
-        x <= to_signed(15, 16);
-        y <= to_signed(35, 16);
+        x <= unsigned(to_signed(15, 16));
+        y <= unsigned(to_signed(35, 16));
         op_selection <= "01";
         wait for 10 ns;
-        x <= to_signed(-15, 16);
-        y <= to_signed(35, 16);
+        x <= unsigned(to_signed(-15, 16));
+        y <= unsigned(to_signed(35, 16));
         op_selection <= "01";
         wait for 10 ns;
-        x <= to_signed(-15, 16);
-        y <= to_signed(-35, 16);
+        x <= unsigned(to_signed(-15, 16));
+        y <= unsigned(to_signed(-35, 16));
         op_selection <= "01";
         wait for 10 ns;
-        x <= to_signed(15, 16);
-        y <= to_signed(35, 16);
+        x <= unsigned(to_signed(15, 16));
+        y <= unsigned(to_signed(35, 16));
         op_selection <= "10";
         wait for 10 ns;
-        x <= to_signed(15, 16);
-        y <= to_signed(-35, 16);
+        x <= unsigned(to_signed(15, 16));
+        y <= unsigned(to_signed(-35, 16));
         op_selection <= "10";
         wait for 10 ns;
-        x <= to_signed(-15, 16);
-        y <= to_signed(35, 16);
+        x <= unsigned(to_signed(-15, 16));
+        y <= unsigned(to_signed(35, 16));
         op_selection <= "11";
         wait for 10 ns;
-        x <= to_signed(15, 16);
-        y <= to_signed(35, 16);
+        x <= unsigned(to_signed(15, 16));
+        y <= unsigned(to_signed(35, 16));
         op_selection <= "11";
         wait for 10 ns;
         wait;
