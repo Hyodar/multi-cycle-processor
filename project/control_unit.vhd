@@ -9,7 +9,8 @@ use work.opcodes.all;
 entity control_unit is
     generic (
         block_size: positive;
-        block_count: positive
+        block_count: positive;
+        rom_content: unsigned_array_t(0 to block_count - 1)(block_size - 1 downto 0)
     );
     port (
         write_enable: in std_logic;
@@ -77,21 +78,7 @@ begin
     port map(clock => clock, reset => reset, write_enable => pc0_write_enable, input => pc0_input, output => pc0_output);
     
     rom0: rom
-    generic map(block_size => 12, block_count => 128, rom_content => (
-            0 => "000000000000", --     nop
-            1 => "000000000000", --     nop
-            2 => "010000000000", --     opcode desconhecido
-            3 => "000000000000", --     nop
-            4 => "000000000000", --     nop
-            5 => "111100000111", --     jump 7
-            6 => "000000000000", --     nop
-            7 => "000000000000", --     nop
-            8 => "111100000000", --     jump 0
-            9 => "000000000000", --     nop
-            10 => "000000000000", --    nop
-            -- abaixo: casos omissos => (zero em todos os bits)
-            others => (others => '0')
-        ))
+    generic map(block_size => block_size, block_count => block_count, rom_content => rom_content)
     port map(clock => clock, address => pc0_output_unsigned, output => instruction);
 
     pc0_write_enable <= '1' when (state = '1' and write_enable = '1' and opcode_exception = '0') else '0';
