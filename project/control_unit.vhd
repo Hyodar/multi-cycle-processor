@@ -2,8 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
-use work.unsigned_array.all;
+use work.utils.all;
 use work.opcodes.all;
 
 entity control_unit is
@@ -42,7 +41,7 @@ architecture a_control_unit of control_unit is
         );
         port (
             clock: in std_logic;
-            address: in unsigned((integer(ceil(log2(real(block_count)))) - 1) downto 0);
+            address: in unsigned((bit_count(block_count) - 1) downto 0);
             output: out unsigned(block_size - 1 downto 0)
         );
     end component;
@@ -55,10 +54,10 @@ architecture a_control_unit of control_unit is
         );
     end component;
     
-    signal pc0_output: unsigned(integer(ceil(log2(real(block_count)))) - 1 downto 0);
-    signal pc0_input: unsigned(integer(ceil(log2(real(block_count)))) - 1 downto 0);
+    signal pc0_output: unsigned(bit_count(block_count) - 1 downto 0);
+    signal pc0_input: unsigned(bit_count(block_count) - 1 downto 0);
     signal pc0_write_enable: std_logic;
-    signal pc0_output_unsigned: unsigned(integer(ceil(log2(real(block_count)))) - 1 downto 0);
+    signal pc0_output_unsigned: unsigned(bit_count(block_count) - 1 downto 0);
     
     signal instruction: unsigned(block_size - 1 downto 0);
     signal state: std_logic;
@@ -67,14 +66,14 @@ architecture a_control_unit of control_unit is
     signal jump_enable: std_logic;
     signal nop_enable: std_logic;
     
-    signal jump_address: unsigned(integer(ceil(log2(real(block_count)))) - 1 downto 0);
+    signal jump_address: unsigned(bit_count(block_count) - 1 downto 0);
 
 begin
     state_machine: t_flipflop
     port map(clock => clock, reset => reset, input => '1', output => state);
     
     pc0: reg
-    generic map(size => integer(ceil(log2(real(block_count)))))
+    generic map(size => bit_count(block_count))
     port map(clock => clock, reset => reset, write_enable => pc0_write_enable, input => pc0_input, output => pc0_output);
     
     rom0: rom
@@ -89,7 +88,7 @@ begin
     nop_enable <= '1' when opcode = OP_NOP else '0';
     opcode_exception <= '0' when (jump_enable or nop_enable) else '1';
     
-    jump_address <= instruction(integer(ceil(log2(real(block_count)))) - 1 downto 0);
+    jump_address <= instruction(bit_count(block_count) - 1 downto 0);
     pc0_input <= pc0_output + 1 when jump_enable = '0' else unsigned(jump_address);
     
     -- saída para debugging

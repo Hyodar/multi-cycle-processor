@@ -2,8 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
-use work.unsigned_array.all;
+use work.utils.all;
 
 entity processor is
     generic (
@@ -14,9 +13,9 @@ entity processor is
         selector: in unsigned(1 downto 0);
         immediate: in unsigned((reg_size - 1) downto 0);
         is_immediate: in unsigned(0 downto 0);
-        reg0: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-        reg1: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-        reg2: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
+        reg0: in unsigned((bit_count(reg_count) - 1) downto 0);
+        reg1: in unsigned((bit_count(reg_count) - 1) downto 0);
+        reg2: in unsigned((bit_count(reg_count) - 1) downto 0);
         write_enable: in std_logic;
         clock: in std_logic;
         reset: in std_logic;
@@ -44,7 +43,7 @@ architecture a_processor of processor is
         );
         port (
             inputs: in unsigned_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
-            selector: in unsigned((integer(ceil(log2(real(input_count)))) - 1) downto 0);
+            selector: in unsigned((bit_count(input_count) - 1) downto 0);
             output: out unsigned((bus_width - 1) downto 0)
         );
     end component;
@@ -54,9 +53,9 @@ architecture a_processor of processor is
             reg_size: positive
         );
         port(
-            read_register1: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-            read_register2: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-            write_register: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
+            read_register1: in unsigned((bit_count(reg_count) - 1) downto 0);
+            read_register2: in unsigned((bit_count(reg_count) - 1) downto 0);
+            write_register: in unsigned((bit_count(reg_count) - 1) downto 0);
             write_data: in unsigned((reg_size - 1) downto 0);
             write_enable: in std_logic;
             clock: in std_logic;

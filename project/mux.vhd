@@ -2,8 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
-use work.unsigned_array.all;
+use work.utils.all;
 
 entity mux is
     generic (
@@ -12,7 +11,7 @@ entity mux is
     );
     port (
         inputs: in unsigned_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
-        selector: in unsigned((integer(ceil(log2(real(input_count)))) - 1) downto 0);
+        selector: in unsigned((bit_count(input_count) - 1) downto 0);
         output: out unsigned((bus_width - 1) downto 0)
     );
 end entity;

@@ -2,7 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
+use work.utils.all;
 
 entity state_machine_tb is
 end;
@@ -15,7 +15,7 @@ architecture a_state_machine_tb of state_machine_tb is
         port(
             clock: in std_logic;
             reset: in std_logic;
-            state: out unsigned((integer(ceil(log2(real(state_count)))) - 1) downto 0)
+            state: out unsigned((bit_count(state_count) - 1) downto 0)
         );
     end component;
     

@@ -2,8 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
-use work.unsigned_array.all;
+use work.utils.all;
 
 entity rom is
     generic (
@@ -13,7 +12,7 @@ entity rom is
     );
     port (
         clock: in std_logic;
-        address: in unsigned((integer(ceil(log2(real(block_count)))) - 1) downto 0);
+        address: in unsigned((bit_count(block_count) - 1) downto 0);
         output: out unsigned(block_size - 1 downto 0)
     );
 end entity;

@@ -5,7 +5,7 @@ SRC_FOLDER = ./project
 BUILD_FOLDER = ./project/Generated
 
 # Os pacotes tem que ser compilados antes pro compilador não reclamar de coisas não declaradas
-CUSTOM_PACKAGES = $(SRC_FOLDER)/unsigned_array.vhd $(SRC_FOLDER)/opcodes.vhd
+CUSTOM_PACKAGES = $(SRC_FOLDER)/utils.vhd $(SRC_FOLDER)/opcodes.vhd
 FILES += $(wildcard $(SRC_FOLDER)/*.vhd)
 FILES += $(wildcard $(SRC_FOLDER)/Testbench/*.vhd)
 FILES := $(CUSTOM_PACKAGES) $(filter-out $(CUSTOM_PACKAGES), $(FILES))

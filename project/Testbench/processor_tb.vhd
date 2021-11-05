@@ -2,7 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
+use work.utils.all;
 
 entity processor_tb is
 end;
@@ -17,9 +17,9 @@ architecture a_processor_tb of processor_tb is
             selector: in unsigned(1 downto 0);
             immediate: in unsigned((reg_size - 1) downto 0);
             is_immediate: in unsigned(0 downto 0);
-            reg0: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-            reg1: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
-            reg2: in unsigned((integer(ceil(log2(real(reg_count)))) - 1) downto 0);
+            reg0: in unsigned((bit_count(reg_count) - 1) downto 0);
+            reg1: in unsigned((bit_count(reg_count) - 1) downto 0);
+            reg2: in unsigned((bit_count(reg_count) - 1) downto 0);
             write_enable: in std_logic;
             clock: in std_logic;
             reset: in std_logic;

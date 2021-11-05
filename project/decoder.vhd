@@ -2,14 +2,14 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
+use work.utils.all;
 
 entity decoder is
     generic (
         output_count: positive
     );
     port (
-        selector: in unsigned((integer(ceil(log2(real(output_count)))) - 1) downto 0);
+        selector: in unsigned((bit_count(output_count) - 1) downto 0);
         enable: in std_logic;
         outputs: out std_logic_vector(0 to output_count - 1)
     );

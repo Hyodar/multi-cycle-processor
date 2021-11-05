@@ -2,8 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
-use work.unsigned_array.all;
+use work.utils.all;
 
 entity control_unit_tb is
 end;
