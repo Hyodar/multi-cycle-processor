@@ -12,7 +12,6 @@ entity control_unit is
         rom_content: unsigned_array_t(0 to block_count - 1)(block_size - 1 downto 0)
     );
     port (
-        write_enable: in std_logic;
         reset: in std_logic;
         clock: in std_logic;
         output: out unsigned(block_size - 1 downto 0);
@@ -57,7 +56,6 @@ architecture a_control_unit of control_unit is
     signal pc0_output: unsigned(bit_count(block_count) - 1 downto 0);
     signal pc0_input: unsigned(bit_count(block_count) - 1 downto 0);
     signal pc0_write_enable: std_logic;
-    signal pc0_output_unsigned: unsigned(bit_count(block_count) - 1 downto 0);
     
     signal instruction: unsigned(block_size - 1 downto 0);
     signal state: std_logic;
@@ -78,10 +76,9 @@ begin
     
     rom0: rom
     generic map(block_size => block_size, block_count => block_count, rom_content => rom_content)
-    port map(clock => clock, address => pc0_output_unsigned, output => instruction);
+    port map(clock => clock, address => pc0_output, output => instruction);
 
-    pc0_write_enable <= '1' when (state = '1' and write_enable = '1' and opcode_exception = '0') else '0';
-    pc0_output_unsigned <= unsigned(pc0_output);
+    pc0_write_enable <= '1' when (state = '1' and opcode_exception = '0') else '0';
     opcode <= instruction(block_size - 1 downto block_size - OPCODE_SIZE);
     
     jump_enable <= '1' when opcode = OP_JUMP else '0';

@@ -15,7 +15,6 @@ architecture a_control_unit_tb of control_unit_tb is
             rom_content: unsigned_array_t(0 to block_count - 1)(block_size - 1 downto 0)
         );
         port (
-            write_enable: in std_logic;
             reset: in std_logic;
             clock: in std_logic;
             output: out unsigned(block_size - 1 downto 0);
@@ -29,7 +28,7 @@ architecture a_control_unit_tb of control_unit_tb is
     signal clock: std_logic;
     signal reset: std_logic;
     signal write_enable: std_logic;
-    signal output: unsigned(11 downto 0);
+    signal output: unsigned(15 downto 0);
     signal opcode_exception: std_logic;
     
 begin
@@ -37,10 +36,10 @@ begin
     generic map(block_size => 16, block_count => 128, rom_content => (
         0 => "0000000000000000",    --      nop
         1 => "0000000000000000",    --      nop
-        2 => "0100000000000000",    --      opcode desconhecido
+        2 => "0000000000000000",    --      nop
         3 => "0000000000000000",    --      nop
         4 => "0000000000000000",    --      nop
-        5 => "1111000001110000",    --      jump 7
+        5 => "1111000000000111",    --      jump 7
         6 => "0000000000000000",    --      nop
         7 => "0000000000000000",    --      nop
         8 => "1111000000000000",    --      jump 0
@@ -49,7 +48,7 @@ begin
         -- abaixo: casos omissos => (zero em todos os bits)
         others => (others => '0')
     ))
-    port map(write_enable => write_enable, reset => reset, clock => clock, output => output, opcode_exception => opcode_exception);
+    port map(reset => reset, clock => clock, output => output, opcode_exception => opcode_exception);
     
     global_reset: process
     begin
@@ -85,12 +84,7 @@ begin
     
     process
     begin
-        wait for 200 ns;
-        
-        write_enable <= '1';
-        wait for 1000 ns;
-        write_enable <= '0';
-        wait for 1000 ns;
+        wait for 2000 ns;
         wait;
     end process;
 end architecture;
