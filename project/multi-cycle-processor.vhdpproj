@@ -62,7 +62,7 @@
     <Header>ula.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
-    <Header>unsigned_array.vhd</Header>
+    <Header>utils.vhd</Header>
   </Items>
   <CruviHSExtensions>
     <string xsi:nil="true" />

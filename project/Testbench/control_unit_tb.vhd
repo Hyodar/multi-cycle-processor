@@ -34,18 +34,18 @@ architecture a_control_unit_tb of control_unit_tb is
     
 begin
     control_unit0 : control_unit
-    generic map(block_size => 12, block_count => 128, rom_content => (
-        0 => "000000000000",    --      nop
-        1 => "000000000000",    --      nop
-        2 => "010000000000",    --      opcode desconhecido
-        3 => "000000000000",    --      nop
-        4 => "000000000000",    --      nop
-        5 => "111100000111",    --      jump 7
-        6 => "000000000000",    --      nop
-        7 => "000000000000",    --      nop
-        8 => "111100000000",    --      jump 0
-        9 => "000000000000",    --      nop
-        10 => "000000000000",   --      nop
+    generic map(block_size => 16, block_count => 128, rom_content => (
+        0 => "0000000000000000",    --      nop
+        1 => "0000000000000000",    --      nop
+        2 => "0100000000000000",    --      opcode desconhecido
+        3 => "0000000000000000",    --      nop
+        4 => "0000000000000000",    --      nop
+        5 => "1111000001110000",    --      jump 7
+        6 => "0000000000000000",    --      nop
+        7 => "0000000000000000",    --      nop
+        8 => "1111000000000000",    --      jump 0
+        9 => "0000000000000000",    --      nop
+        10 => "0100000000000000",   --      nop
         -- abaixo: casos omissos => (zero em todos os bits)
         others => (others => '0')
     ))
