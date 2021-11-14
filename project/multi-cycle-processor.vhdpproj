@@ -5,25 +5,31 @@
     <Header>Generated</Header>
   </Items>
   <Items xsi:type="ProjectFolder">
-    <Header>Testbench</Header>
+    <Header>Package</Header>
     <Items xsi:type="ProjectFileVHDL">
-      <Header>control_unit_tb.vhd</Header>
+      <Header>instruction.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
-      <Header>processor_tb.vhd</Header>
+      <Header>state.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
-      <Header>state_machine_tb.vhd</Header>
+      <Header>status.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
-      <Header>t_flipflop_tb.vhd</Header>
-    </Items>
-    <Items xsi:type="ProjectFileVHDL">
-      <Header>ula_tb.vhd</Header>
+      <Header>utils.vhd</Header>
     </Items>
   </Items>
   <Items xsi:type="ProjectFolderReference">
     <Header>Shared</Header>
+  </Items>
+  <Items xsi:type="ProjectFolder">
+    <Header>Testbench</Header>
+    <Items xsi:type="ProjectFileVHDL">
+      <Header>processador_tb.vhd</Header>
+    </Items>
+    <Items xsi:type="ProjectFileVHDL">
+      <Header>ula_tb.vhd</Header>
+    </Items>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>control_unit.vhd</Header>
@@ -32,16 +38,16 @@
     <Header>decoder.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
-    <Header>mux.vhd</Header>
+    <Header>instruction_register.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
-    <Header>opcodes.vhd</Header>
+    <Header>mux.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>operator.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
-    <Header>processor.vhd</Header>
+    <Header>processador.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>reg.vhd</Header>
@@ -56,13 +62,10 @@
     <Header>state_machine.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
-    <Header>t_flipflop.vhd</Header>
+    <Header>status_register.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>ula.vhd</Header>
-  </Items>
-  <Items xsi:type="ProjectFileVHDL">
-    <Header>unsigned_array.vhd</Header>
   </Items>
   <CruviHSExtensions>
     <string xsi:nil="true" />
@@ -74,6 +77,6 @@
     <string xsi:nil="true" />
   </CruviLSExtensions>
   <IOVoltage>0</IOVoltage>
-  <HardwareStartPathRelative>control_unit.vhd</HardwareStartPathRelative>
+  <HardwareStartPathRelative>processador.vhd</HardwareStartPathRelative>
   <UseShield>false</UseShield>
 </ProjectRoot>

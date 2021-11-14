@@ -2,29 +2,26 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.utils.all;
+use work.state.all;
 
 entity state_machine is
-    generic (
-        state_count: positive
-    );
     port(
         clock: in std_logic;
         reset: in std_logic;
-        state: out unsigned((bit_count(state_count) - 1) downto 0)
+        state: out state_t
     );
 end entity state_machine;
 
 architecture a_state_machine of state_machine is
-    signal state_s: state'subtype;
+    signal state_s: state_t;
 begin
     process(clock, reset)
     begin
         if reset = '1' then
-            state_s <= to_unsigned(0, bit_count(state_count));
+            state_s <= ST_FETCH;
         elsif rising_edge(clock) then
-            if state_s = to_unsigned(state_count - 1, bit_count(state_count)) then
-                state_s <= to_unsigned(0, bit_count(state_count));
+            if state_s = ST_EXECUTE then
+                state_s <= ST_FETCH;
             else
                 state_s <= state_s + 1;
             end if;
