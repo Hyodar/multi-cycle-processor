@@ -13,16 +13,19 @@ entity rom is
     port (
         clock: in std_logic;
         address: in unsigned((bit_count(block_count) - 1) downto 0);
+        enable: in std_logic;
         output: out unsigned(block_size - 1 downto 0)
     );
 end entity;
 
 architecture a_rom of rom is
 begin
-    process(clock)
-    begin
-        if (rising_edge(clock)) then
-            output <= rom_content(to_integer(address));
-        end if;
-    end process;
+    -- process(clock)
+    -- begin
+    --     if enable = '1' then
+    --         if (rising_edge(clock)) then
+                output <= rom_content(to_integer(address));
+    --         end if;
+    --     end if;
+    -- end process;
 end architecture a_rom;

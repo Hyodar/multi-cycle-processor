@@ -79,6 +79,7 @@ component rom is
     port (
         clock: in std_logic;
         address: in unsigned((bit_count(block_count) - 1) downto 0);
+        enable: in std_logic;
         output: out unsigned(block_size - 1 downto 0)
     );
 end component rom;
@@ -113,10 +114,11 @@ component control_unit is
         reg_write: out std_logic;
         status_write: out std_logic;
         pc_source: out unsigned(1 downto 0);
-        not_ldi: out unsigned(0 downto 0);
+        value_write: out unsigned(1 downto 0);
         alu_op: out unsigned(1 downto 0);
         alu_src_a: out unsigned(0 downto 0);
-        alu_src_b: out unsigned(1 downto 0)
+        alu_src_b: out unsigned(1 downto 0);
+        mem_read: out std_logic
     );
 end component control_unit;
 component status_register is
@@ -140,10 +142,11 @@ signal ctrl_ir_write: std_logic;
 signal ctrl_reg_write: std_logic;
 signal ctrl_status_write: std_logic;
 signal ctrl_pc_source: unsigned(1 downto 0);
-signal ctrl_not_ldi: unsigned(0 downto 0);
+signal ctrl_value_write: unsigned(1 downto 0);
 signal ctrl_alu_op: unsigned(1 downto 0);
 signal ctrl_alu_src_a: unsigned(0 downto 0);
 signal ctrl_alu_src_b: unsigned(1 downto 0);
+signal ctrl_mem_read: std_logic;
 
 signal state: state_t;
 signal status: status_t;
@@ -166,7 +169,6 @@ signal regb_output: reg_content_t;
 signal alu_input0: reg_content_t;
 signal alu_input1: reg_content_t;
 signal alu_output: reg_content_t;
-signal alu_out_output: reg_content_t;
 
 -- ---------------------------------------------------------------------------
 
@@ -190,10 +192,11 @@ begin
         reg_write => ctrl_reg_write,
         status_write => ctrl_status_write,
         pc_source => ctrl_pc_source,
-        not_ldi => ctrl_not_ldi,
+        value_write => ctrl_value_write,
         alu_op => ctrl_alu_op,
         alu_src_a => ctrl_alu_src_a,
-        alu_src_b => ctrl_alu_src_b
+        alu_src_b => ctrl_alu_src_b,
+        mem_read => ctrl_mem_read
     );
 
     status_reg: status_register
@@ -204,7 +207,7 @@ begin
         operation => instr_opcode,
         arg0 => rega_output,
         arg1 => regb_output,
-        result => alu_out_output,
+        result => alu_output,
         output => status
     );
 
@@ -229,6 +232,7 @@ begin
     port map(
         clock => clock,
         address => pc_output,
+        enable => ctrl_mem_read,
         output => progmem_output
     );
 
@@ -263,12 +267,12 @@ begin
 
     write_data_mux: mux
     generic map(
-        input_count => 2,
+        input_count => 3,
         bus_width => reg_content_t'length
     )
     port map(
-        inputs => (0 => resize(instr_sec2 & instr_sec3, reg_content_t'length), 1 => alu_out_output),
-        selector => ctrl_not_ldi,
+        inputs => (0 => resize(instr_sec2 & instr_sec3, reg_content_t'length), 1 => alu_output, 2 => regb_output),
+        selector => ctrl_value_write,
         output => write_data_mux_output
     );
 
@@ -329,18 +333,6 @@ begin
         output => alu_output
     );
 
-    alu_out: reg
-    generic map(
-        size => reg_content_t'length
-    )
-    port map(
-        clock => clock,
-        reset => reset,
-        write_enable => '1',
-        input => alu_output,
-        output => alu_out_output
-    );
-
     pc_mux: mux
     generic map(
         input_count => 3,
@@ -349,8 +341,8 @@ begin
     port map(
         inputs => (
             0 => alu_output,
-            1 => pc_output(progmem_address_t'length - 1 downto progmem_address_t'length - 4) & instr_sec1 & instr_sec2 & instr_sec3,
-            2 => alu_out_output
+            1 => alu_output,
+            2 => pc_output(progmem_address_t'length - 1 downto progmem_address_t'length - 4) & instr_sec1 & instr_sec2 & instr_sec3
         ),
         selector => ctrl_pc_source,
         output => pc_mux_output

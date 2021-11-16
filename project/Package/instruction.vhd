@@ -12,8 +12,9 @@ package instruction is
     constant OP_NOP: opcode_t := "0000";
     constant OP_ADD: opcode_t := "0001";
     constant OP_SUB: opcode_t := "0010";
-    constant OP_MOV: opcode_t := "0011";
-    constant OP_LDI: opcode_t := "0100";
+    constant OP_SUBI: opcode_t := "0011";
+    constant OP_MOV: opcode_t := "0100";
+    constant OP_LDI: opcode_t := "0101";
     constant OP_JMP: opcode_t := "1111";
 
     subtype progmem_address_t is unsigned(15 downto 0);
