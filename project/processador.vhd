@@ -14,7 +14,13 @@ entity processador is
     );
     port(
         clock: in std_logic;
-        reset: in std_logic
+        reset: in std_logic;
+        TOPLVL_state: out state_t;
+        TOPLVL_pc: out progmem_address_t;
+        TOPLVL_instruction: out instruction_t;
+        TOPLVL_reg1: out reg_content_t;
+        TOPLVL_reg2: out reg_content_t;
+        TOPLVL_alu: out reg_content_t
     );
 end entity;
 
@@ -347,7 +353,13 @@ begin
         selector => ctrl_pc_source,
         output => pc_mux_output
     );
-    
 -- ---------------------------------------------------------------------------
+
+    TOPLVL_state <= state;
+    TOPLVL_pc <= pc_output;
+    TOPLVL_instruction <= instr_opcode & instr_sec1 & instr_sec2 & instr_sec3;
+    TOPLVL_reg1 <= rega_input;
+    TOPLVL_reg2 <= regb_input;
+    TOPLVL_alu <= alu_output;
 
 end architecture a_processador;

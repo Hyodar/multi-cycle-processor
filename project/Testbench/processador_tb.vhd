@@ -2,8 +2,10 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+
 use work.utils.all;
 use work.instruction.all;
+use work.state.all;
 
 entity processador_tb is
 end entity;
@@ -16,7 +18,13 @@ component processador is
     );
     port(
         clock: in std_logic;
-        reset: in std_logic
+        reset: in std_logic;
+        TOPLVL_state: out state_t;
+        TOPLVL_pc: out progmem_address_t;
+        TOPLVL_instruction: out instruction_t;
+        TOPLVL_reg1: out reg_content_t;
+        TOPLVL_reg2: out reg_content_t;
+        TOPLVL_alu: out reg_content_t
     );
 end component processador;
 
@@ -27,21 +35,17 @@ signal clock: std_logic;
 signal reset: std_logic;
 
 begin
-    -- SUB, SUBI, MOV
-    -- NOP, ADD, LDI, JUMP
     processor: processador
     generic map(
         rom_content => (
-            0 => B"0101_0001_1111_1111",  -- ldi r1,0xFF        | r1 = 255;
-            1 => B"0101_0010_0000_0001",  -- ldi r2,0x1         | r2 = 1;
-            2 => B"0001_0001_0010_0000",  -- add r1,r2          | r1 += r2;
-            3 => B"0010_0001_0010_0000",  -- sub r1,r2          | r1 -= r2;
-            4 => B"0011_0001_0000_0001",  -- subi r1,0x1        | r1 -= 1;
-            5 => B"0011_0001_0000_0001",  -- subi r1,0x1        | r1 -= 1;
-            6 => B"0100_0010_0001_0000",  -- mov r2,r1       | r2 <- r1;
-            7 => B"1111_0000_0000_0110",  -- jmp 7              | while (true);
-            8 => B"0100_0001_0010_0000",  -- mov r1,r2          | r1 <- r2;
-           --  7 => B"0100_0001_0010_0000",  -- nop
+            0 => B"0101_0011_0000_0101",   -- ldi r3,0x05        | r1 = 255;
+            1 => B"0101_0100_0000_1000",   -- ldi r4,0x08        | r2 = 1;
+            2 => B"0001_0011_0100_0000",   -- label1: add r3,r4  | label1: r3 += r4;
+            3 => B"0100_0101_0011_0000",   -- mov r5,r3          | r5 = r3;
+            4 => B"0011_0101_0000_0001",   -- subi r5,0x01       | r5 -= 1;
+            5 => B"1111_0000_0001_0100",   -- jmp label2         | goto label2;
+            20 => B"0100_0011_0101_0000",  -- label2: mov r3,r5  | label2: r5 = r3;
+            21 => B"1111_0000_0000_0010",  -- jmp label1         | goto label1;
             others => B"0000_0000_0000_0000"
         )
     )
