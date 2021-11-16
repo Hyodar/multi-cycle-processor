@@ -20,8 +20,10 @@ package instruction is
     subtype progmem_address_t is unsigned(15 downto 0);
     constant ROM_SIZE: integer := 65536; -- 2^16
 
-    subtype reg_content_t is unsigned(15 downto 0);
+    subtype reg_content_t is unsigned(7 downto 0);
     subtype reg_address_t is unsigned(3 downto 0);
     constant REG_COUNT: integer := 16; -- 2^4
+
+    subtype alu_operand_t is unsigned(15 downto 0);
 
 end package instruction;
