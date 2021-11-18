@@ -33,6 +33,12 @@ signal finished: std_logic := '0';
 
 signal clock: std_logic;
 signal reset: std_logic;
+signal TOPLVL_state: state_t;
+signal TOPLVL_pc: progmem_address_t;
+signal TOPLVL_instruction: instruction_t;
+signal TOPLVL_reg1: reg_content_t;
+signal TOPLVL_reg2: reg_content_t;
+signal TOPLVL_alu: reg_content_t;
 
 begin
     processor: processador
@@ -51,7 +57,13 @@ begin
     )
     port map(
         clock => clock,
-        reset => reset
+        reset => reset,
+        TOPLVL_state => TOPLVL_state,
+        TOPLVL_pc => TOPLVL_pc,
+        TOPLVL_instruction => TOPLVL_instruction,
+        TOPLVL_reg1 => TOPLVL_reg1,
+        TOPLVL_reg2 => TOPLVL_reg2,
+        TOPLVL_alu => TOPLVL_alu
     );
 
     global_reset: process
