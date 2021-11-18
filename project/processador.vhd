@@ -133,6 +133,9 @@ component status_register is
         reset: in std_logic;
         write_enable: in std_logic;
         operation: in opcode_t;
+        section1: in instr_section_t;
+        section2: in instr_section_t;
+        section3: in instr_section_t;
         arg0: in reg_content_t;
         arg1: in reg_content_t;
         result: in reg_content_t;
@@ -211,6 +214,9 @@ begin
         reset => reset,
         write_enable => ctrl_status_write,
         operation => instr_opcode,
+        section1 => instr_sec1,
+        section2 => instr_sec2,
+        section3 => instr_sec3,
         arg0 => rega_output,
         arg1 => regb_output,
         result => alu_output,
