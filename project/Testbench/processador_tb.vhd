@@ -24,7 +24,7 @@ component processador is
         TOPLVL_instruction: out instruction_t;
         TOPLVL_reg1: out reg_content_t;
         TOPLVL_reg2: out reg_content_t;
-        TOPLVL_alu: out alu_operand_t
+        TOPLVL_alu: out reg_content_t
     );
 end component processador;
 

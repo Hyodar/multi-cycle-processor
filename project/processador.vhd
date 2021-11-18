@@ -20,7 +20,7 @@ entity processador is
         TOPLVL_instruction: out instruction_t;
         TOPLVL_reg1: out reg_content_t;
         TOPLVL_reg2: out reg_content_t;
-        TOPLVL_alu: out alu_operand_t
+        TOPLVL_alu: out reg_content_t
     );
 end entity;
 
@@ -135,7 +135,7 @@ component status_register is
         operation: in opcode_t;
         arg0: in reg_content_t;
         arg1: in reg_content_t;
-        result: in alu_operand_t;
+        result: in reg_content_t;
         output: out status_t
     );
 end component status_register;
@@ -172,9 +172,9 @@ signal regb_input: reg_content_t;
 signal rega_output: reg_content_t;
 signal regb_output: reg_content_t;
 
-signal alu_input0: alu_operand_t;
-signal alu_input1: alu_operand_t;
-signal alu_output: alu_operand_t;
+signal alu_input0: reg_content_t;
+signal alu_input1: reg_content_t;
+signal alu_output: reg_content_t;
 
 -- ---------------------------------------------------------------------------
 
@@ -277,11 +277,7 @@ begin
         bus_width => reg_content_t'length
     )
     port map(
-        inputs => (
-            0 => instr_sec2 & instr_sec3,
-            1 => alu_output(reg_content_t'length - 1 downto 0),
-            2 => regb_output
-        ),
+        inputs => (0 => resize(instr_sec2 & instr_sec3, reg_content_t'length), 1 => alu_output, 2 => regb_output),
         selector => ctrl_value_write,
         output => write_data_mux_output
     );
@@ -313,10 +309,10 @@ begin
     alu_input0_mux: mux
     generic map(
         input_count => 2,
-        bus_width => alu_operand_t'length
+        bus_width => reg_content_t'length
     )
     port map(
-        inputs => (0 => pc_output, 1 => resize(rega_output, alu_operand_t'length)),
+        inputs => (0 => pc_output, 1 => rega_output),
         selector => ctrl_alu_src_a,
         output => alu_input0
     );
@@ -324,21 +320,17 @@ begin
     alu_input1_mux: mux
     generic map(
         input_count => 3,
-        bus_width => alu_operand_t'length
+        bus_width => reg_content_t'length
     )
     port map(
-        inputs => (
-            0 => resize(regb_output, alu_operand_t'length),
-            1 => to_unsigned(1, alu_operand_t'length),
-            2 => resize(instr_sec2 & instr_sec3, alu_operand_t'length)
-        ),
+        inputs => (0 => regb_output, 1 => to_unsigned(1, reg_content_t'length), 2 => resize(instr_sec2 & instr_sec3, reg_content_t'length)),
         selector => ctrl_alu_src_b,
         output => alu_input1
     );
 
     alu: ula
     generic map(
-        reg_size => alu_operand_t'length
+        reg_size => reg_content_t'length
     )
     port map(
         x => alu_input0,

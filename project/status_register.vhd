@@ -13,7 +13,7 @@ entity status_register is
         operation: in opcode_t;
         arg0: in reg_content_t;
         arg1: in reg_content_t;
-        result: in alu_operand_t;
+        result: in reg_content_t;
         output: out status_t
     );
 end entity;
@@ -41,7 +41,7 @@ begin
 
     output <= unsigned_to_status(reg0_output);
 
-    status.carry <= arg0(7);
+    status.carry <= '0';
     status.zero <= '0';
     status.negative <= '0';
     status.overflow <= '0';
