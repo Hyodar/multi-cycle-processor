@@ -70,14 +70,9 @@ begin
     reg_selector: decoder
     generic map(output_count => reg_count)
     port map(selector => write_register, enable => write_enable, outputs => write_enables);
-
-    -- $0: fica com 0 a partir do reset e não pode ser sobrescrito
-    reg_zero: reg
-    generic map(size => reg_size)
-    port map(clock => clock, reset => reset, write_enable => '0', input => write_data, output => outputs(0));
     
     generate_regs:
-    for i in 1 to reg_count - 1 generate
+    for i in 0 to reg_count - 1 generate
         regx: reg
         generic map(size => reg_size)
         port map(clock => clock, reset => reset, write_enable => write_enables(i), input => write_data, output => outputs(i));
