@@ -119,7 +119,7 @@ component control_unit is
         ir_write: out std_logic;
         reg_write: out std_logic;
         status_write: out std_logic;
-        pc_source: out unsigned(1 downto 0);
+        pc_source: out unsigned(0 downto 0);
         value_write: out unsigned(1 downto 0);
         alu_op: out unsigned(1 downto 0);
         alu_src_a: out unsigned(0 downto 0);
@@ -150,7 +150,7 @@ signal ctrl_pc_write: std_logic;
 signal ctrl_ir_write: std_logic;
 signal ctrl_reg_write: std_logic;
 signal ctrl_status_write: std_logic;
-signal ctrl_pc_source: unsigned(1 downto 0);
+signal ctrl_pc_source: unsigned(0 downto 0);
 signal ctrl_value_write: unsigned(1 downto 0);
 signal ctrl_alu_op: unsigned(1 downto 0);
 signal ctrl_alu_src_a: unsigned(0 downto 0);
@@ -178,6 +178,9 @@ signal regb_output: reg_content_t;
 signal alu_input0: reg_content_t;
 signal alu_input1: reg_content_t;
 signal alu_output: reg_content_t;
+
+signal branch_immediate: unsigned((3 * instr_section_t'length - 1) downto 0);
+signal TESTE_branch_immediate: signed(15 downto 0);
 
 -- ---------------------------------------------------------------------------
 
@@ -283,7 +286,10 @@ begin
         bus_width => reg_content_t'length
     )
     port map(
-        inputs => (0 => resize(instr_sec2 & instr_sec3, reg_content_t'length), 1 => alu_output, 2 => regb_output),
+        inputs => (
+            0 => resize(instr_sec2 & instr_sec3, reg_content_t'length),
+            1 => alu_output, 2 => regb_output
+        ),
         selector => ctrl_value_write,
         output => write_data_mux_output
     );
@@ -325,11 +331,16 @@ begin
 
     alu_input1_mux: mux
     generic map(
-        input_count => 3,
+        input_count => 4,
         bus_width => reg_content_t'length
     )
     port map(
-        inputs => (0 => regb_output, 1 => to_unsigned(1, reg_content_t'length), 2 => resize(instr_sec2 & instr_sec3, reg_content_t'length)),
+        inputs => (
+            0 => regb_output,
+            1 => to_unsigned(1, reg_content_t'length),
+            2 => resize(instr_sec2 & instr_sec3, reg_content_t'length),
+            3 => unsigned(resize(signed(branch_immediate), reg_content_t'length))
+        ),
         selector => ctrl_alu_src_b,
         output => alu_input1
     );
@@ -347,19 +358,21 @@ begin
 
     pc_mux: mux
     generic map(
-        input_count => 3,
+        input_count => 2,
         bus_width => progmem_address_t'length
     )
     port map(
         inputs => (
             0 => alu_output,
-            1 => alu_output,
-            2 => pc_output(progmem_address_t'length - 1 downto progmem_address_t'length - 4) & instr_sec1 & instr_sec2 & instr_sec3
+            1 => pc_output(progmem_address_t'length - 1 downto progmem_address_t'length - 4) & instr_sec1 & instr_sec2 & instr_sec3
         ),
         selector => ctrl_pc_source,
         output => pc_mux_output
     );
 -- ---------------------------------------------------------------------------
+
+    branch_immediate <= instr_sec1 & instr_sec2 & instr_sec3;
+    TESTE_branch_immediate <= resize(signed(branch_immediate), 16);
 
     TOPLVL_state <= state;
     TOPLVL_pc <= pc_output;
