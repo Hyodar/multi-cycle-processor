@@ -20,10 +20,15 @@ package instruction is
     constant OP_BREQ: opcode_t := "1000";
     constant OP_BRNE: opcode_t := "1001";
     constant OP_BRLO: opcode_t := "1010";
+    constant OP_LD:   opcode_t := "1011";
+    constant OP_ST:   opcode_t := "1100";
     constant OP_JMP: opcode_t  := "1111";
 
     subtype progmem_address_t is unsigned(15 downto 0);
+    subtype data_mem_address_t    is unsigned(15 downto 0);
+    subtype data_mem_content_t    is unsigned(15 downto 0);
     constant ROM_SIZE: integer := 65536; -- 2^16
+    constant RAM_SIZE: integer := 65536; -- 2^16
 
     subtype reg_content_t is unsigned(15 downto 0);
     subtype reg_address_t is unsigned(3 downto 0);

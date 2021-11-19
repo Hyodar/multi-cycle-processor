@@ -19,17 +19,23 @@
       <Header>utils.vhd</Header>
     </Items>
   </Items>
-  <Items xsi:type="ProjectFolderReference">
-    <Header>Shared</Header>
-  </Items>
   <Items xsi:type="ProjectFolder">
     <Header>Testbench</Header>
     <Items xsi:type="ProjectFileVHDL">
       <Header>processador_tb.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
+      <Header>processador_tb2.vhd</Header>
+    </Items>
+    <Items xsi:type="ProjectFileVHDL">
+      <Header>processador_tb3.vhd</Header>
+    </Items>
+    <Items xsi:type="ProjectFileVHDL">
       <Header>ula_tb.vhd</Header>
     </Items>
+  </Items>
+  <Items xsi:type="ProjectFolderReference">
+    <Header>Shared</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>control_unit.vhd</Header>
@@ -48,6 +54,9 @@
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>processador.vhd</Header>
+  </Items>
+  <Items xsi:type="ProjectFileVHDL">
+    <Header>ram.vhd</Header>
   </Items>
   <Items xsi:type="ProjectFileVHDL">
     <Header>reg.vhd</Header>

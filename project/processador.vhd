@@ -28,159 +28,171 @@ architecture a_processador of processador is
 
 -- Components
 -- ---------------------------------------------------------------------------
-component regbank is
-    generic (
-        reg_count: positive;
-        reg_size: positive
-    );
-    port(
-        read_register1: in unsigned((bit_count(reg_count) - 1) downto 0);
-        read_register2: in unsigned((bit_count(reg_count) - 1) downto 0);
-        write_register: in unsigned((bit_count(reg_count) - 1) downto 0);
-        write_data: in unsigned(reg_size - 1 downto 0);
-        write_enable: in std_logic;
-        clock: in std_logic;
-        reset: in std_logic;
-        read_data1: out unsigned(reg_size - 1 downto 0);
-        read_data2: out unsigned(reg_size - 1 downto 0)
-    );
-end component regbank;
-component reg is
-    generic (
-        size: positive
-    );
-    port (
-        clock: in std_logic;
-        reset: in std_logic;
-        write_enable: in std_logic;
-        input: in unsigned(size - 1 downto 0);
-        output: out unsigned(size - 1 downto 0)
-    );
-end component reg;
-component instruction_register is
-    port (
-        clock: in std_logic;
-        reset: in std_logic;
-        write_enable: in std_logic;
-        input: in instruction_t;
-        opcode: out opcode_t;
-        section1: out instr_section_t;
-        section2: out instr_section_t;
-        section3: out instr_section_t
-    );
-end component instruction_register;
-component state_machine is
-    port(
-        clock: in std_logic;
-        reset: in std_logic;
-        state: out state_t
-    );
-end component state_machine;
-component rom is
-    generic (
-        block_size: positive;
-        block_count: positive;
-        rom_content: unsigned_array_t(0 to block_count - 1)(block_size - 1 downto 0)
-    );
-    port (
-        clock: in std_logic;
-        address: in unsigned((bit_count(block_count) - 1) downto 0);
-        enable: in std_logic;
-        output: out unsigned(block_size - 1 downto 0)
-    );
-end component rom;
-component ula is
-    generic (
-        reg_size: positive
-    );
-    port(
-        x, y : in unsigned((reg_size - 1) downto 0);
-        op_selection : in unsigned(1 downto 0);
-        output : out unsigned((reg_size - 1) downto 0)
-    );
-end component ula;
-component mux is
-    generic (
-        input_count: positive;
-        bus_width: positive
-    );
-    port (
-        inputs: in unsigned_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
-        selector: in unsigned((bit_count(input_count) - 1) downto 0);
-        output: out unsigned((bus_width - 1) downto 0)
-    );
-end component mux;
-component control_unit is
-    port(
-        operation: in opcode_t;
-        state: in state_t;
-        status: in status_t;
-        pc_write: out std_logic;
-        ir_write: out std_logic;
-        reg_write: out std_logic;
-        status_write: out std_logic;
-        pc_source: out unsigned(0 downto 0);
-        value_write: out unsigned(1 downto 0);
-        alu_op: out unsigned(1 downto 0);
-        alu_src_a: out unsigned(0 downto 0);
-        alu_src_b: out unsigned(1 downto 0);
-        mem_read: out std_logic
-    );
-end component control_unit;
-component status_register is
-    port (
-        clock: in std_logic;
-        reset: in std_logic;
-        write_enable: in std_logic;
-        operation: in opcode_t;
-        section1: in instr_section_t;
-        section2: in instr_section_t;
-        section3: in instr_section_t;
-        arg0: in reg_content_t;
-        arg1: in reg_content_t;
-        result: in reg_content_t;
-        output: out status_t
-    );
-end component status_register;
+    component regbank is
+        generic (
+            reg_count: positive;
+            reg_size: positive
+        );
+        port(
+            read_register1: in unsigned((bit_count(reg_count) - 1) downto 0);
+            read_register2: in unsigned((bit_count(reg_count) - 1) downto 0);
+            write_register: in unsigned((bit_count(reg_count) - 1) downto 0);
+            write_data: in unsigned(reg_size - 1 downto 0);
+            write_enable: in std_logic;
+            clock: in std_logic;
+            reset: in std_logic;
+            read_data1: out unsigned(reg_size - 1 downto 0);
+            read_data2: out unsigned(reg_size - 1 downto 0)
+        );
+    end component regbank;
+    component reg is
+        generic (
+            size: positive
+        );
+        port (
+            clock: in std_logic;
+            reset: in std_logic;
+            write_enable: in std_logic;
+            input: in unsigned(size - 1 downto 0);
+            output: out unsigned(size - 1 downto 0)
+        );
+    end component reg;
+    component instruction_register is
+        port (
+            clock: in std_logic;
+            reset: in std_logic;
+            write_enable: in std_logic;
+            input: in instruction_t;
+            opcode: out opcode_t;
+            section1: out instr_section_t;
+            section2: out instr_section_t;
+            section3: out instr_section_t
+        );
+    end component instruction_register;
+    component state_machine is
+        port(
+            clock: in std_logic;
+            reset: in std_logic;
+            state: out state_t
+        );
+    end component state_machine;
+    component rom is
+        generic (
+            block_size: positive;
+            block_count: positive;
+            rom_content: unsigned_array_t(0 to block_count - 1)(block_size - 1 downto 0)
+        );
+        port (
+            clock: in std_logic;
+            address: in unsigned((bit_count(block_count) - 1) downto 0);
+            output: out unsigned(block_size - 1 downto 0)
+        );
+    end component rom;
+    component ula is
+        generic (
+            reg_size: positive
+        );
+        port(
+            x, y : in unsigned((reg_size - 1) downto 0);
+            op_selection : in unsigned(1 downto 0);
+            output : out unsigned((reg_size - 1) downto 0)
+        );
+    end component ula;
+    component mux is
+        generic (
+            input_count: positive;
+            bus_width: positive
+        );
+        port (
+            inputs: in unsigned_array_t(0 to (input_count - 1))((bus_width - 1) downto 0);
+            selector: in unsigned((bit_count(input_count) - 1) downto 0);
+            output: out unsigned((bus_width - 1) downto 0)
+        );
+    end component mux;
+    component control_unit is
+        port(
+            operation: in opcode_t;
+            state: in state_t;
+            status: in status_t;
+            pc_write: out std_logic;
+            ir_write: out std_logic;
+            reg_write: out std_logic;
+            status_write: out std_logic;
+            pc_source: out unsigned(0 downto 0);
+            value_write: out unsigned(1 downto 0);
+            alu_op: out unsigned(1 downto 0);
+            alu_src_a: out unsigned(0 downto 0);
+            alu_src_b: out unsigned(1 downto 0);
+            data_mem_write: out std_logic
+        );
+    end component control_unit;
+    component status_register is
+        port (
+            clock: in std_logic;
+            reset: in std_logic;
+            write_enable: in std_logic;
+            operation: in opcode_t;
+            section1: in instr_section_t;
+            section2: in instr_section_t;
+            section3: in instr_section_t;
+            arg0: in reg_content_t;
+            arg1: in reg_content_t;
+            result: in reg_content_t;
+            output: out status_t
+        );
+    end component status_register;
+    component ram is
+        generic (
+            block_size: positive;
+            block_count: positive
+        );
+        port (
+            clock: in std_logic;
+            address: in unsigned((bit_count(block_count) - 1) downto 0);
+            write_enable: in std_logic;
+            write_data: in unsigned(block_size - 1 downto 0);
+            output: out unsigned(block_size - 1 downto 0)
+        );
+    end component ram;
 -- ---------------------------------------------------------------------------
 
 -- Signals
 -- ---------------------------------------------------------------------------
-signal ctrl_pc_write: std_logic;
-signal ctrl_ir_write: std_logic;
-signal ctrl_reg_write: std_logic;
-signal ctrl_status_write: std_logic;
-signal ctrl_pc_source: unsigned(0 downto 0);
-signal ctrl_value_write: unsigned(1 downto 0);
-signal ctrl_alu_op: unsigned(1 downto 0);
-signal ctrl_alu_src_a: unsigned(0 downto 0);
-signal ctrl_alu_src_b: unsigned(1 downto 0);
-signal ctrl_mem_read: std_logic;
+    signal ctrl_pc_write: std_logic;
+    signal ctrl_ir_write: std_logic;
+    signal ctrl_reg_write: std_logic;
+    signal ctrl_status_write: std_logic;
+    signal ctrl_pc_source: unsigned(0 downto 0);
+    signal ctrl_value_write: unsigned(1 downto 0);
+    signal ctrl_alu_op: unsigned(1 downto 0);
+    signal ctrl_alu_src_a: unsigned(0 downto 0);
+    signal ctrl_alu_src_b: unsigned(1 downto 0);
+    signal ctrl_data_mem_write: std_logic;
 
-signal state: state_t;
-signal status: status_t;
+    signal state: state_t;
+    signal status: status_t;
 
-signal pc_mux_output: progmem_address_t;
-signal pc_output: progmem_address_t;
-signal progmem_output: instruction_t;
+    signal pc_mux_output: progmem_address_t;
+    signal pc_output: progmem_address_t;
+    signal progmem_output: instruction_t;
+    signal data_mem_output: data_mem_content_t;
 
-signal instr_opcode: opcode_t;
-signal instr_sec1: instr_section_t;
-signal instr_sec2: instr_section_t;
-signal instr_sec3: instr_section_t;
+    signal instr_opcode: opcode_t;
+    signal instr_sec1: instr_section_t;
+    signal instr_sec2: instr_section_t;
+    signal instr_sec3: instr_section_t;
 
-signal write_data_mux_output: reg_content_t;
-signal rega_input: reg_content_t;
-signal regb_input: reg_content_t;
-signal rega_output: reg_content_t;
-signal regb_output: reg_content_t;
+    signal write_data_mux_output: reg_content_t;
+    signal rega_input: reg_content_t;
+    signal regb_input: reg_content_t;
+    signal rega_output: reg_content_t;
+    signal regb_output: reg_content_t;
 
-signal alu_input0: reg_content_t;
-signal alu_input1: reg_content_t;
-signal alu_output: reg_content_t;
+    signal alu_input0: reg_content_t;
+    signal alu_input1: reg_content_t;
+    signal alu_output: reg_content_t;
 
-signal branch_immediate: unsigned((3 * instr_section_t'length - 1) downto 0);
-signal TESTE_branch_immediate: signed(15 downto 0);
+    signal branch_immediate: unsigned((3 * instr_section_t'length - 1) downto 0);
 
 -- ---------------------------------------------------------------------------
 
@@ -208,7 +220,7 @@ begin
         alu_op => ctrl_alu_op,
         alu_src_a => ctrl_alu_src_a,
         alu_src_b => ctrl_alu_src_b,
-        mem_read => ctrl_mem_read
+        data_mem_write => ctrl_data_mem_write
     );
 
     status_reg: status_register
@@ -238,7 +250,7 @@ begin
         output => pc_output
     );
 
-    progmem: rom
+    prog_mem: rom
     generic map(
         block_size => instruction_t'length,
         block_count => ROM_SIZE,
@@ -247,7 +259,6 @@ begin
     port map(
         clock => clock,
         address => pc_output,
-        enable => ctrl_mem_read,
         output => progmem_output
     );
 
@@ -282,13 +293,15 @@ begin
 
     write_data_mux: mux
     generic map(
-        input_count => 3,
+        input_count => 4,
         bus_width => reg_content_t'length
     )
     port map(
         inputs => (
             0 => resize(instr_sec2 & instr_sec3, reg_content_t'length),
-            1 => alu_output, 2 => regb_output
+            1 => alu_output,
+            2 => regb_output,
+            3 => data_mem_output
         ),
         selector => ctrl_value_write,
         output => write_data_mux_output
@@ -369,10 +382,22 @@ begin
         selector => ctrl_pc_source,
         output => pc_mux_output
     );
+    
+    data_mem: ram
+    generic map(
+        block_size => reg_content_t'length,
+        block_count => RAM_SIZE
+    )
+    port map(
+        clock => clock,
+        address => regb_output,
+        write_enable => ctrl_data_mem_write,
+        write_data => rega_output,
+        output => data_mem_output
+    );
 -- ---------------------------------------------------------------------------
 
     branch_immediate <= instr_sec1 & instr_sec2 & instr_sec3;
-    TESTE_branch_immediate <= resize(signed(branch_immediate), 16);
 
     TOPLVL_state <= state;
     TOPLVL_pc <= pc_output;

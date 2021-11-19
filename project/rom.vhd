@@ -13,7 +13,6 @@ entity rom is
     port (
         clock: in std_logic;
         address: in unsigned((bit_count(block_count) - 1) downto 0);
-        enable: in std_logic;
         output: out unsigned(block_size - 1 downto 0)
     );
 end entity;
