@@ -31,6 +31,9 @@
       <Header>processador_tb3.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
+      <Header>processador_tb5.vhd</Header>
+    </Items>
+    <Items xsi:type="ProjectFileVHDL">
       <Header>ula_tb.vhd</Header>
     </Items>
   </Items>
