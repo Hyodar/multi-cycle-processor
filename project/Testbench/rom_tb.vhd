@@ -19,7 +19,6 @@ component rom is
     port (
         clock: in std_logic;
         address: in unsigned((bit_count(block_count) - 1) downto 0);
-        enable: in std_logic;
         output: out unsigned(block_size - 1 downto 0)
     );
 end component rom;
@@ -76,8 +75,7 @@ begin
     port map(
         clock => clock,
         address => pc_output,
-        output => output,
-        enable => '1'
+        output => output
     );
 
     global_reset: process

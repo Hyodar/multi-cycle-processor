@@ -34,15 +34,15 @@ architecture a_ula of ula is
         port (
             x, y: in unsigned((reg_size - 1) downto 0);
             sum, sub: out unsigned((reg_size - 1) downto 0);
-            greater, negative_x: out unsigned((reg_size - 1) downto 0)
+            product, negative_x: out unsigned((reg_size - 1) downto 0)
         );
     end component;
-    signal sum_result, sub_result, greater_result, negative_result : unsigned((reg_size - 1) downto 0);
+    signal sum_result, sub_result, product_result, negative_result : unsigned((reg_size - 1) downto 0);
 begin
     operator0: operator
     generic map(reg_size => reg_size)
-    port map(x => x, y => y, sum => sum_result, sub => sub_result, greater => greater_result, negative_x => negative_result);
+    port map(x => x, y => y, sum => sum_result, sub => sub_result, product => product_result, negative_x => negative_result);
     mux0: mux
     generic map(input_count => 4, bus_width => reg_size)
-    port map(inputs => (0 => sum_result, 1 => sub_result, 2 => greater_result, 3 => negative_result), selector => op_selection, output => output);
+    port map(inputs => (0 => sum_result, 1 => sub_result, 2 => product_result, 3 => negative_result), selector => op_selection, output => output);
 end architecture;
