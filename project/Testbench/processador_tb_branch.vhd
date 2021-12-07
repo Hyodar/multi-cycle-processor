@@ -7,10 +7,10 @@ use work.utils.all;
 use work.instruction.all;
 use work.state.all;
 
-entity processador_tb2 is
+entity processador_tb_branch is
 end entity;
 
-architecture a_processador_tb2 of processador_tb2 is
+architecture a_processador_tb_branch of processador_tb_branch is
 
 component processador is
     generic(
@@ -98,4 +98,4 @@ begin
         wait;
     end process;
 
-end architecture a_processador_tb2;
+end architecture a_processador_tb_branch;

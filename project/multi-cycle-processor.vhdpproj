@@ -25,13 +25,16 @@
       <Header>processador_tb.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
-      <Header>processador_tb2.vhd</Header>
-    </Items>
-    <Items xsi:type="ProjectFileVHDL">
       <Header>processador_tb3.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
-      <Header>processador_tb5.vhd</Header>
+      <Header>processador_tb4.vhd</Header>
+    </Items>
+    <Items xsi:type="ProjectFileVHDL">
+      <Header>processador_tb_branch.vhd</Header>
+    </Items>
+    <Items xsi:type="ProjectFileVHDL">
+      <Header>processador_tb_crivo.vhd</Header>
     </Items>
     <Items xsi:type="ProjectFileVHDL">
       <Header>ula_tb.vhd</Header>

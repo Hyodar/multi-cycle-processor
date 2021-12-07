@@ -19,12 +19,5 @@ end entity;
 
 architecture a_rom of rom is
 begin
-    -- process(clock)
-    -- begin
-    --     if enable = '1' then
-    --         if (rising_edge(clock)) then
-                output <= rom_content(to_integer(address));
-    --         end if;
-    --     end if;
-    -- end process;
+    output <= rom_content(to_integer(address));
 end architecture a_rom;

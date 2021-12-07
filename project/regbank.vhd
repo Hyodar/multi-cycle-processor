@@ -18,7 +18,8 @@ entity regbank is
         clock: in std_logic;
         reset: in std_logic;
         read_data1: out unsigned(reg_size - 1 downto 0);
-        read_data2: out unsigned(reg_size - 1 downto 0)
+        read_data2: out unsigned(reg_size - 1 downto 0);
+        output_crivo: out unsigned(reg_size - 1 downto 0)
     );
 end entity regbank;
 
@@ -78,4 +79,5 @@ begin
         port map(clock => clock, reset => reset, write_enable => write_enables(i), input => write_data, output => outputs(i));
     end generate generate_regs;
     
+    output_crivo <= outputs(8);
 end architecture a_regbank;

@@ -9,21 +9,20 @@ package instruction is
     subtype instr_section_t is unsigned(3 downto 0);
     subtype opcode_t is instr_section_t;
 
-    constant OP_NOP:  opcode_t := "0000";
-    constant OP_ADD:  opcode_t := "0001";
-    constant OP_SUB:  opcode_t := "0010";
+    constant OP_NOP: opcode_t  := "0000";
+    constant OP_ADD: opcode_t  := "0001";
+    constant OP_SUB: opcode_t  := "0010";
     constant OP_SUBI: opcode_t := "0011";
-    constant OP_MUL:  opcode_t := "0100";
-    constant OP_MOV:  opcode_t := "0101";
-    constant OP_LDI:  opcode_t := "0110";
-    constant OP_CP:   opcode_t := "0111";
-    constant OP_CPI:  opcode_t := "1000";
-    constant OP_BREQ: opcode_t := "1001";
-    constant OP_BRNE: opcode_t := "1010";
-    constant OP_BRLO: opcode_t := "1011";
-    constant OP_LD:   opcode_t := "1100";
-    constant OP_ST:   opcode_t := "1101";
-    constant OP_JMP:  opcode_t := "1111";
+    constant OP_MOV: opcode_t  := "0100";
+    constant OP_LDI: opcode_t  := "0101";
+    constant OP_CP: opcode_t   := "0110";
+    constant OP_CPI: opcode_t  := "0111";
+    constant OP_BREQ: opcode_t := "1000";
+    constant OP_BRNE: opcode_t := "1001";
+    constant OP_BRLO: opcode_t := "1010";
+    constant OP_LD:   opcode_t := "1011";
+    constant OP_ST:   opcode_t := "1100";
+    constant OP_JMP: opcode_t  := "1111";
 
     subtype progmem_address_t is unsigned(15 downto 0);
     subtype data_mem_address_t    is unsigned(15 downto 0);

@@ -24,7 +24,8 @@ architecture a_processador_tb3 of processador_tb3 is
             TOPLVL_instruction: out instruction_t;
             TOPLVL_reg1: out reg_content_t;
             TOPLVL_reg2: out reg_content_t;
-            TOPLVL_alu: out reg_content_t
+            TOPLVL_alu: out reg_content_t;
+            TOPLVL_crivo: out reg_content_t
         );
     end component processador;
 
@@ -39,6 +40,7 @@ architecture a_processador_tb3 of processador_tb3 is
     signal TOPLVL_reg1: reg_content_t;
     signal TOPLVL_reg2: reg_content_t;
     signal TOPLVL_alu: reg_content_t;
+    signal TOPLVL_crivo: reg_content_t;
 
 begin
     processor: processador
@@ -59,7 +61,8 @@ begin
         TOPLVL_instruction => TOPLVL_instruction,
         TOPLVL_reg1 => TOPLVL_reg1,
         TOPLVL_reg2 => TOPLVL_reg2,
-        TOPLVL_alu => TOPLVL_alu
+        TOPLVL_alu => TOPLVL_alu,
+        TOPLVL_crivo => TOPLVL_crivo
     );
 
     global_reset: process

@@ -20,7 +20,8 @@ entity processador is
         TOPLVL_instruction: out instruction_t;
         TOPLVL_reg1: out reg_content_t;
         TOPLVL_reg2: out reg_content_t;
-        TOPLVL_alu: out reg_content_t
+        TOPLVL_alu: out reg_content_t;
+        TOPLVL_crivo: out reg_content_t
     );
 end entity;
 
@@ -42,7 +43,8 @@ architecture a_processador of processador is
             clock: in std_logic;
             reset: in std_logic;
             read_data1: out unsigned(reg_size - 1 downto 0);
-            read_data2: out unsigned(reg_size - 1 downto 0)
+            read_data2: out unsigned(reg_size - 1 downto 0);
+            output_crivo: out unsigned(reg_size - 1 downto 0)
         );
     end component regbank;
     component reg is
@@ -288,7 +290,8 @@ begin
         reset => reset,
         write_enable => ctrl_reg_write,
         read_data1 => rega_input,
-        read_data2 => regb_input
+        read_data2 => regb_input,
+        output_crivo => TOPLVL_crivo
     );
 
     write_data_mux: mux
