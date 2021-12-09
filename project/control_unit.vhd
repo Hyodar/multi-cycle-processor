@@ -15,7 +15,7 @@ entity control_unit is
         pc_write: out std_logic;
         ir_write: out std_logic;
         reg_write: out std_logic;
-        status_write: out std_logic;
+        status_write: out status_t;
         pc_source: out unsigned(0 downto 0);
         value_write: out unsigned(1 downto 0);
         alu_op: out unsigned(1 downto 0);
@@ -28,15 +28,18 @@ end entity control_unit;
 architecture a_control_unit of control_unit is
 
     signal branch_enable: std_logic;
+    signal status_enable: std_logic;
 
 begin
 
     branch_enable <= '1' when
-        (operation = OP_BRLO and status.carry = '1') or
-        (operation = OP_BREQ and status.zero = '1') or
-        (operation = OP_BRNE and status.zero = '0')
-    else '0';
-
+    (operation = OP_BRLO and status.carry = '1') or
+    (operation = OP_BREQ and status.zero = '1') or
+    (operation = OP_BRNE and status.zero = '0')
+else '0';
+    
+    status_enable <= '1' when (state = ST_EXECUTE and (operation = OP_ADD or operation = OP_SUB or operation = OP_SUBI or operation = OP_CP or operation = OP_CPI)) else '0';
+    
     ir_write <= '1' when state = ST_FETCH else '0';
     pc_write <= '1' when state = ST_FETCH or ((operation = OP_JMP or branch_enable = '1') and state = ST_EXECUTE) else '0';
     reg_write <= '1' when state = ST_EXECUTE and (operation = OP_ADD or operation = OP_SUB or operation = OP_SUBI or operation = OP_MOV or operation = OP_LDI or operation = OP_LD) else '0';
@@ -51,8 +54,17 @@ begin
     alu_src_b <= "01" when state = ST_FETCH else
         "10" when (state = ST_EXECUTE and (operation = OP_SUBI or operation = OP_CPI)) else
         "11" when (state = ST_EXECUTE and (operation = OP_BREQ or operation = OP_BRLO or operation = OP_BRNE)) else
-        "00";
-    status_write <= '1' when state = ST_EXECUTE else '0';
+        "00"
+    ;
+    status_write.carry      <= status_enable;
+    status_write.zero       <= status_enable;
+    status_write.negative   <= status_enable;
+    status_write.overflow   <= status_enable;
+    status_write.sign       <= status_enable;
+    status_write.half_carry <= status_enable;
+    status_write.bit_copy   <= '0';
+    status_write.interrupt  <= '0';
+    
     data_mem_write <= '1' when (operation = OP_ST and state = ST_EXECUTE) else '0';
 
 end architecture a_control_unit;

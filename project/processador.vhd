@@ -119,7 +119,7 @@ architecture a_processador of processador is
             pc_write: out std_logic;
             ir_write: out std_logic;
             reg_write: out std_logic;
-            status_write: out std_logic;
+            status_write: out status_t;
             pc_source: out unsigned(0 downto 0);
             value_write: out unsigned(1 downto 0);
             alu_op: out unsigned(1 downto 0);
@@ -132,7 +132,7 @@ architecture a_processador of processador is
         port (
             clock: in std_logic;
             reset: in std_logic;
-            write_enable: in std_logic;
+            write_enable: in status_t;
             operation: in opcode_t;
             section1: in instr_section_t;
             section2: in instr_section_t;
@@ -163,7 +163,7 @@ architecture a_processador of processador is
     signal ctrl_pc_write: std_logic;
     signal ctrl_ir_write: std_logic;
     signal ctrl_reg_write: std_logic;
-    signal ctrl_status_write: std_logic;
+    signal ctrl_status_write: status_t;
     signal ctrl_pc_source: unsigned(0 downto 0);
     signal ctrl_value_write: unsigned(1 downto 0);
     signal ctrl_alu_op: unsigned(1 downto 0);
