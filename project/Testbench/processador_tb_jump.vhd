@@ -7,10 +7,10 @@ use work.utils.all;
 use work.instruction.all;
 use work.state.all;
 
-entity processador_tb4 is
+entity processador_tb_jump is
 end entity;
 
-architecture a_processador_tb4 of processador_tb4 is
+architecture a_processador_tb_jump of processador_tb_jump is
 
     component processador is
         generic(
@@ -24,7 +24,8 @@ architecture a_processador_tb4 of processador_tb4 is
             TOPLVL_instruction: out instruction_t;
             TOPLVL_reg1: out reg_content_t;
             TOPLVL_reg2: out reg_content_t;
-            TOPLVL_alu: out reg_content_t
+            TOPLVL_alu: out reg_content_t;
+            TOPLVL_crivo: out reg_content_t
         );
     end component processador;
 
@@ -39,14 +40,21 @@ architecture a_processador_tb4 of processador_tb4 is
     signal TOPLVL_reg1: reg_content_t;
     signal TOPLVL_reg2: reg_content_t;
     signal TOPLVL_alu: reg_content_t;
+    signal TOPLVL_crivo: reg_content_t;
+
 
 begin
     processor: processador
     generic map(
         rom_content => (
-            0 => B"0110_0011_0000_0010",   -- ldi r3,0x02        | r3 = 2;
-            1 => B"0100_0011_0011_0000",   -- label1: mul r3,r3  | label1: r3 *= r3;
-            2 => B"1111_0000_0000_0001",   -- jmp 1              | goto label1;
+            0 => B"0101_0011_0000_0101",   -- ldi r3,0x05        | r3 = 5;
+            1 => B"0101_0100_0000_1000",   -- ldi r4,0x08        | r4 = 8;
+            2 => B"0001_0011_0100_0000",   -- label1: add r3,r4  | label1: r3 += r4;
+            3 => B"0100_0101_0011_0000",   -- mov r5,r3          | r5 = r3;
+            4 => B"0011_0101_0000_0001",   -- subi r5,0x01       | r5 -= 1;
+            5 => B"1111_0000_0001_0100",   -- jmp label2         | goto label2;
+            20 => B"0100_0011_0101_0000",  -- label2: mov r3,r5  | label2: r5 = r3;
+            21 => B"1111_0000_0000_0010",  -- jmp label1         | goto label1;
             others => B"0000_0000_0000_0000"
         )
     )
@@ -58,7 +66,8 @@ begin
         TOPLVL_instruction => TOPLVL_instruction,
         TOPLVL_reg1 => TOPLVL_reg1,
         TOPLVL_reg2 => TOPLVL_reg2,
-        TOPLVL_alu => TOPLVL_alu
+        TOPLVL_alu => TOPLVL_alu,
+        TOPLVL_crivo => TOPLVL_crivo
     );
 
     global_reset: process
@@ -71,7 +80,7 @@ begin
     
     sim_time_proc: process
     begin
-        wait for 100 us;
+        wait for 10 us;
         finished <= '1';
         wait;
     end process sim_time_proc;
@@ -93,4 +102,4 @@ begin
         wait;
     end process;
 
-end architecture a_processador_tb4;
+end architecture a_processador_tb_jump;

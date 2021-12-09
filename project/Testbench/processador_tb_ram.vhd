@@ -7,10 +7,10 @@ use work.utils.all;
 use work.instruction.all;
 use work.state.all;
 
-entity processador_tb3 is
+entity processador_tb_ram is
 end entity;
 
-architecture a_processador_tb3 of processador_tb3 is
+architecture a_processador_tb_ram of processador_tb_ram is
 
     component processador is
         generic(
@@ -46,10 +46,13 @@ begin
     processor: processador
     generic map(
         rom_content => (
-            0 => B"0110_0011_0000_0010",   -- ldi r3,0x02        | r3 = 2;
-            1 => B"0110_0100_0000_1010",   -- ldi r4,0x0A        | r4 = 10;
-            2 => B"1101_0011_0100_0000",   -- st (r4), r3        | mem[r4] = r3;
-            3 => B"1100_0101_0100_0001",   -- ld r5, (r4)        | r5 = mem[r4];
+            0 => B"0101_0011_0000_0010",   -- ldi r3,0x02        | r3 = 2;
+            1 => B"0101_1110_0000_1010",   -- ldi r14,0x0A       | r14 = 10;
+            2 => B"1100_0011_1110_0000",   -- st (r14), r3       | mem[r14] = r3;
+            3 => B"1011_0101_1110_0000",   -- ld r5, (r14)       | r5 = mem[r14];
+            4 => B"0101_0011_0000_1000",   -- ldi r3,0x08        | r3 = 8;
+            5 => B"1100_0011_1110_0000",   -- st (r14), r3       | mem[r14] = r3;
+            6 => B"1011_0101_1110_0000",   -- ld r5, (r14)       | r5 = mem[r14];
             others => B"0000_0000_0000_0000"
         )
     )
@@ -97,4 +100,4 @@ begin
         wait;
     end process;
 
-end architecture a_processador_tb3;
+end architecture a_processador_tb_ram;
