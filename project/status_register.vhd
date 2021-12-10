@@ -35,8 +35,6 @@ architecture a_status_register of status_register is
             output: out unsigned(size - 1 downto 0)
         );
     end component reg;
-    signal reg0_input: unsigned(7 downto 0);
-    signal reg0_output: unsigned(7 downto 0);
     signal imm: reg_content_t;
     signal status: status_t;
     signal is_zero: std_logic;
@@ -114,7 +112,5 @@ begin
     status.bit_copy <= '1' when status.bit_copy = '1' else '0';
     
     status.interrupt <= '1' when status.interrupt = '1' else '0';
-
-    reg0_input <= status_to_unsigned(status);
 
 end architecture a_status_register;
